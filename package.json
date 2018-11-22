@@ -33,7 +33,9 @@
       "react/jsx-filename-extension": "off",
       "implicit-arrow-linebreak": "off",
       "operator-linebreak": "off",
-      "object-curly-newline": "off"
+      "object-curly-newline": "off",
+      "arrow-parens": "off",
+      "import/prefer-default-export": "off"
     }
   },
   "prettier": {

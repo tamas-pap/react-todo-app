@@ -1,35 +1,15 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { Normalize } from 'styled-normalize';
+import { TodoList } from './components';
 
-import {
-  GlobalStyle,
-  TodoList,
-  TodoListTitle,
-  TodoListItems,
-  TodoListItem,
-  TodoListInput,
-  TodoListCheckbox,
-} from './components/styled';
+import { GlobalStyle } from './components/styled';
 
 const App = () => (
   <Fragment>
     <Normalize />
     <GlobalStyle />
-    <TodoList>
-      <TodoListTitle>Todo list</TodoListTitle>
-      <TodoListInput />
-      <TodoListItems>
-        <TodoListItem>
-          <TodoListCheckbox />
-          Todo 1
-        </TodoListItem>
-        <TodoListItem>
-          <TodoListCheckbox />
-          Todo 2
-        </TodoListItem>
-      </TodoListItems>
-    </TodoList>
+    <TodoList />
   </Fragment>
 );
 
