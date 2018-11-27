@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { transparentize } from 'polished';
 
 import checkSvg from '../../assets/img/check.svg';
+import deleteSvg from '../../assets/img/delete.svg';
 
 export const TodoList = styled.div`
   width: 440px;
@@ -19,12 +20,13 @@ export const TodoListTitle = styled.h1`
 export const TodoListInput = styled.input`
   height: 38px;
   width: 100%;
+  padding: 4px 8px;
   border-radius: 4px;
   border: 1px solid ${transparentize(0.9, '#000')};
   box-shadow: inset 0 1px 3px 0 ${transparentize(0.9, '#000')};
   background-color: #fff;
 
-  &:hover {
+  &:focus {
     border-color: #4a4ae5;
   }
 `;
@@ -33,11 +35,26 @@ export const TodoListItems = styled.ul`
   margin: 30px 0 90px;
 `;
 
+export const TodoListDelete = styled.button`
+    display: none;
+    width: 11px;
+    height: 11px;
+    background: url('${deleteSvg}') no-repeat center;
+    border: none;
+    margin-left: auto;
+`;
+
 export const TodoListItem = styled.li`
   display: flex;
   align-items: center;
   margin-bottom: 15px;
   font-size: 16px;
+
+  &:hover {
+    ${TodoListDelete} {
+      display: block;
+    }
+  }
 `;
 
 export const TodoListCheckbox = styled.div`

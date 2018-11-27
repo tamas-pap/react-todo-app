@@ -1,6 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    outline: none;
+    box-sizing: border-box;
+  }
+
   body {
     height: 100vh;
     padding: 0;
