@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import memoize from 'memoize-one';
 import {
   TodoList as TodoListContainer,
   TodoListTitle,
@@ -19,32 +20,28 @@ const FILTERS = {
   incompleted: 'Incompleted',
 };
 
+const filterTodos = memoize((todos, filter) => {
+  switch (filter) {
+    case FILTERS.all:
+      return todos;
+
+    case FILTERS.completed:
+      return todos.filter(todo => todo.isCompleted);
+
+    case FILTERS.incompleted:
+      return todos.filter(todo => !todo.isCompleted);
+
+    default:
+      return todos;
+  }
+});
+
 class TodoList extends Component {
   state = {
     inputValue: '',
     todos: [],
     filter: FILTERS.all,
-    filteredTodos: [],
   };
-
-  static getDerivedStateFromProps(props, state) {
-    let filteredTodos;
-    switch (state.filter) {
-      case FILTERS.all:
-        filteredTodos = state.todos;
-        break;
-      case FILTERS.completed:
-        filteredTodos = state.todos.filter(todo => todo.isCompleted);
-        break;
-      case FILTERS.incompleted:
-        filteredTodos = state.todos.filter(todo => !todo.isCompleted);
-        break;
-      default:
-        filteredTodos = state.todos;
-        break;
-    }
-    return { filteredTodos };
-  }
 
   addTodo = title => {
     this.setState(prevState => ({ todos: [{ isCompleted: false, title }, ...prevState.todos] }));
@@ -94,7 +91,9 @@ class TodoList extends Component {
   };
 
   render() {
-    const { inputValue, filter, filteredTodos } = this.state;
+    const { inputValue, filter, todos } = this.state;
+    const filteredTodos = filterTodos(todos, filter);
+
     return (
       <TodoListContainer>
         <TodoListTitle>Todo list</TodoListTitle>
