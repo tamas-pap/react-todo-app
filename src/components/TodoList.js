@@ -7,22 +7,44 @@ import {
   TodoListInput,
   TodoListCheckbox,
   TodoListDelete,
+  TodoListFilter,
+  TodoListFilterOptions,
+  TodoListFilterOption,
+  TodoListFilterLabel,
 } from './styled';
+
+const FILTERS = {
+  all: 'All',
+  completed: 'Completed',
+  incompleted: 'Incompleted',
+};
 
 class TodoList extends Component {
   state = {
     inputValue: '',
-    todos: [
-      {
-        title: 'todo 1',
-        isCompleted: false,
-      },
-      {
-        title: 'todo 2',
-        isCompleted: true,
-      },
-    ],
+    todos: [],
+    filter: FILTERS.all,
+    filteredTodos: [],
   };
+
+  static getDerivedStateFromProps(props, state) {
+    let filteredTodos;
+    switch (state.filter) {
+      case FILTERS.all:
+        filteredTodos = state.todos;
+        break;
+      case FILTERS.completed:
+        filteredTodos = state.todos.filter(todo => todo.isCompleted);
+        break;
+      case FILTERS.incompleted:
+        filteredTodos = state.todos.filter(todo => !todo.isCompleted);
+        break;
+      default:
+        filteredTodos = state.todos;
+        break;
+    }
+    return { filteredTodos };
+  }
 
   addTodo = title => {
     this.setState(prevState => ({ todos: [{ isCompleted: false, title }, ...prevState.todos] }));
@@ -67,8 +89,12 @@ class TodoList extends Component {
     this.setState({ inputValue: event.target.value });
   };
 
+  setFilter = filter => {
+    this.setState({ filter });
+  };
+
   render() {
-    const { todos, inputValue } = this.state;
+    const { inputValue, filter, filteredTodos } = this.state;
     return (
       <TodoListContainer>
         <TodoListTitle>Todo list</TodoListTitle>
@@ -79,7 +105,7 @@ class TodoList extends Component {
           value={inputValue}
         />
         <TodoListItems>
-          {todos.map((todo, index) => (
+          {filteredTodos.map((todo, index) => (
             <TodoListItem key={index}>
               <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => this.toggleTodo(index)} />
               {todo.title}
@@ -87,6 +113,26 @@ class TodoList extends Component {
             </TodoListItem>
           ))}
         </TodoListItems>
+        <TodoListFilter>
+          <TodoListFilterLabel>Show:</TodoListFilterLabel>
+          <TodoListFilterOptions>
+            <TodoListFilterOption isSelected={filter === FILTERS.all} onClick={() => this.setFilter(FILTERS.all)}>
+              {FILTERS.all}
+            </TodoListFilterOption>
+            <TodoListFilterOption
+              isSelected={filter === FILTERS.completed}
+              onClick={() => this.setFilter(FILTERS.completed)}
+            >
+              {FILTERS.completed}
+            </TodoListFilterOption>
+            <TodoListFilterOption
+              isSelected={filter === FILTERS.incompleted}
+              onClick={() => this.setFilter(FILTERS.incompleted)}
+            >
+              {FILTERS.incompleted}
+            </TodoListFilterOption>
+          </TodoListFilterOptions>
+        </TodoListFilter>
       </TodoListContainer>
     );
   }

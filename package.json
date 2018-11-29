@@ -36,7 +36,8 @@
       "object-curly-newline": "off",
       "arrow-parens": "off",
       "import/prefer-default-export": "off",
-      "no-alert": "off"
+      "no-alert": "off",
+      "max-len": "off"
     }
   },
   "prettier": {
@@ -51,5 +52,10 @@
     "requirePragma": false,
     "proseWrap": "preserve"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
