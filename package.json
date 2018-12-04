@@ -38,7 +38,8 @@
       "arrow-parens": "off",
       "import/prefer-default-export": "off",
       "no-alert": "off",
-      "max-len": "off"
+      "max-len": "off",
+      "indent": "off"
     }
   },
   "prettier": {
