@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import memoize from 'memoize-one';
 import {
   TodoList as TodoListContainer,
@@ -13,10 +13,7 @@ import {
   TodoListFilterOption,
   TodoListFilterLabel,
 } from './styled';
-import {
-  useTodoList,
-  useInput
-} from '../states';
+import { useTodoList, useInput } from '../states';
 
 const FILTERS = {
   all: 'All',
@@ -41,73 +38,61 @@ const filterTodos = memoize((todos, filter) => {
 });
 
 const TodoList = () => {
-  const {     
-    todos,
-    filter,
-    addTodo,
-    toggleTodo,
-    deleteTodo,
-    setFilter
-  } = useTodoList({ todos: [], filter: FILTERS.all });
+  const { todos, filter, addTodo, toggleTodo, deleteTodo, setFilter } = useTodoList({ todos: [], filter: FILTERS.all });
 
-  const { value, setValue } = useInput("");
+  const { value, setValue } = useInput('');
 
-  const inputKeyPress = event => {
+  const onInputKeyPress = event => {
     if (event.key === 'Enter' && !!value.trim()) {
       addTodo(value);
-      setValue("");
+      setValue('');
     }
   };
 
-  const inputChange = event => {
-    this.setState({ inputValue: event.target.value });
+  const onInputChange = event => {
+    setValue(event.target.value);
   };
 
-  render() {
-    const { inputValue, filter, todos } = this.state;
-    const filteredTodos = filterTodos(todos, filter);
+  const filteredTodos = filterTodos(todos, filter);
 
-    return (
-      <TodoListContainer>
-        <TodoListTitle>Todo list</TodoListTitle>
-        <TodoListInput
-          placeholder="Write your idea here..."
-          onKeyPress={this.onInputKeyPress}
-          onChange={this.onInputChange}
-          value={inputValue}
-        />
-        <TodoListItems>
-          {filteredTodos.map((todo, index) => (
-            <TodoListItem key={index}>
-              <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => this.toggleTodo(index)} />
-              {todo.title}
-              <TodoListDelete onClick={() => this.deleteTodo(index)} />
-            </TodoListItem>
-          ))}
-        </TodoListItems>
-        <TodoListFilter>
-          <TodoListFilterLabel>Show:</TodoListFilterLabel>
-          <TodoListFilterOptions>
-            <TodoListFilterOption isSelected={filter === FILTERS.all} onClick={() => this.setFilter(FILTERS.all)}>
-              {FILTERS.all}
-            </TodoListFilterOption>
-            <TodoListFilterOption
-              isSelected={filter === FILTERS.completed}
-              onClick={() => this.setFilter(FILTERS.completed)}
-            >
-              {FILTERS.completed}
-            </TodoListFilterOption>
-            <TodoListFilterOption
-              isSelected={filter === FILTERS.incompleted}
-              onClick={() => this.setFilter(FILTERS.incompleted)}
-            >
-              {FILTERS.incompleted}
-            </TodoListFilterOption>
-          </TodoListFilterOptions>
-        </TodoListFilter>
-      </TodoListContainer>
-    );
-  }
-}
+  return (
+    <TodoListContainer>
+      <TodoListTitle>Todo list</TodoListTitle>
+      <TodoListInput
+        placeholder="Write your idea here..."
+        onKeyPress={onInputKeyPress}
+        onChange={onInputChange}
+        value={value}
+      />
+      <TodoListItems>
+        {filteredTodos.map((todo, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <TodoListItem key={index}>
+            <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => toggleTodo(index)} />
+            {todo.title}
+            <TodoListDelete onClick={() => deleteTodo(index)} />
+          </TodoListItem>
+        ))}
+      </TodoListItems>
+      <TodoListFilter>
+        <TodoListFilterLabel>Show:</TodoListFilterLabel>
+        <TodoListFilterOptions>
+          <TodoListFilterOption isSelected={filter === FILTERS.all} onClick={() => setFilter(FILTERS.all)}>
+            {FILTERS.all}
+          </TodoListFilterOption>
+          <TodoListFilterOption isSelected={filter === FILTERS.completed} onClick={() => setFilter(FILTERS.completed)}>
+            {FILTERS.completed}
+          </TodoListFilterOption>
+          <TodoListFilterOption
+            isSelected={filter === FILTERS.incompleted}
+            onClick={() => setFilter(FILTERS.incompleted)}
+          >
+            {FILTERS.incompleted}
+          </TodoListFilterOption>
+        </TodoListFilterOptions>
+      </TodoListFilter>
+    </TodoListContainer>
+  );
+};
 
 export default TodoList;

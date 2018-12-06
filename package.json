@@ -5,8 +5,8 @@
   "dependencies": {
     "memoize-one": "^4.0.3",
     "polished": "^2.3.0",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react": "16.7.0-alpha.2 - next",
+    "react-dom": "16.7.0-alpha.2 - next",
     "react-scripts": "2.1.1",
     "styled-components": "^4.1.1",
     "styled-normalize": "^8.0.4"

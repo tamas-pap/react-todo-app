@@ -1,2 +1,2 @@
-export useTodoList from './useTodoList';
-export useInput from './useInput';
+export { default as useTodoList } from './useTodoList';
+export { default as useInput } from './useInput';
