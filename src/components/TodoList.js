@@ -37,11 +37,22 @@ const filterTodos = memoize((todos, filter) => {
 });
 
 class TodoList extends Component {
-  state = {
-    inputValue: '',
-    todos: [],
-    filter: FILTERS.all,
-  };
+  constructor(props) {
+    super(props);
+    const storedTodos = localStorage.getItem('todos');
+    const todos = storedTodos ? JSON.parse(storedTodos) : [];
+    const filter = localStorage.getItem('filter') || FILTERS.all;
+
+    this.state = {
+      inputValue: '',
+      todos,
+      filter,
+    };
+  }
+
+  componentDidUpdate() {
+    this.saveToLocalStorage();
+  }
 
   addTodo = title => {
     this.setState(prevState => ({ todos: [{ isCompleted: false, title }, ...prevState.todos] }));
@@ -88,6 +99,12 @@ class TodoList extends Component {
 
   setFilter = filter => {
     this.setState({ filter });
+  };
+
+  saveToLocalStorage = () => {
+    const { todos, filter } = this.state;
+    localStorage.setItem('todos', JSON.stringify(todos));
+    localStorage.setItem('filter', filter);
   };
 
   render() {
