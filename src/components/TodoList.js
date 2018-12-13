@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import memoize from 'memoize-one';
 import io from 'socket.io-client';
+import nanoid from 'nanoid';
 import { ADD_TODO, TOGGLE_TODO, DELETE_TODO } from '../constants';
 import {
   TodoList as TodoListContainer,
@@ -54,24 +55,49 @@ class TodoList extends Component {
 
   componentDidMount() {
     this.socket = io('http://localhost:3000');
+    this.socket.on('message', this.onMessage);
   }
 
   componentDidUpdate() {
     this.saveToLocalStorage();
   }
 
-  addTodo = title => {
-    this.setState(prevState => ({ todos: [{ isCompleted: false, title }, ...prevState.todos] }));
-    this.socket.emit('message', { type: ADD_TODO, payload: { title } });
+  onMessage = message => {
+    const { type, payload } = message;
+    switch (type) {
+      case ADD_TODO:
+        this.addTodo(payload.title, payload.id);
+        break;
+
+      case TOGGLE_TODO:
+        this.toggleTodo(payload.id);
+        break;
+
+      case DELETE_TODO:
+        this.deleteTodo(payload.id);
+        break;
+
+      default:
+        break;
+    }
   };
 
-  toggleTodo = toggleIndex => {
+  addTodo = (title, existingId, shouldSendMessage = false) => {
+    const id = existingId || nanoid();
+    this.setState(prevState => ({ todos: [{ id, isCompleted: false, title }, ...prevState.todos] }));
+    if (shouldSendMessage) {
+      this.socket.emit('message', { type: ADD_TODO, payload: { title, id } });
+    }
+  };
+
+  toggleTodo = (toggleId, shouldSendMessage = false) => {
     const { todos } = this.state;
-    const newTodos = todos.map((todo, index) => {
-      if (toggleIndex === index) {
+    const newTodos = todos.map(todo => {
+      if (toggleId === todo.id) {
         return {
           isCompleted: !todo.isCompleted,
           title: todo.title,
+          id: todo.id,
         };
       }
       return todo;
@@ -79,25 +105,29 @@ class TodoList extends Component {
     this.setState({
       todos: newTodos,
     });
-    this.socket.emit('message', { type: TOGGLE_TODO, payload: { index: toggleIndex } });
+    if (shouldSendMessage) {
+      this.socket.emit('message', { type: TOGGLE_TODO, payload: { id: toggleId } });
+    }
   };
 
-  deleteTodo = deleteIndex => {
-    const shouldDelete = window.confirm('Are you sure?');
+  deleteTodo = (deleteId, shouldSendMessage = false) => {
+    const shouldDelete = !shouldSendMessage || window.confirm('Are you sure?');
     if (shouldDelete) {
       const { todos } = this.state;
-      const newTodos = todos.filter((todo, index) => deleteIndex !== index);
+      const newTodos = todos.filter(todo => deleteId !== todo.id);
       this.setState({
         todos: newTodos,
       });
-      this.socket.emit('message', { type: DELETE_TODO, payload: { index: deleteIndex } });
+      if (shouldSendMessage) {
+        this.socket.emit('message', { type: DELETE_TODO, payload: { id: deleteId } });
+      }
     }
   };
 
   onInputKeyPress = event => {
     const { inputValue } = this.state;
     if (event.key === 'Enter' && !!inputValue.trim()) {
-      this.addTodo(inputValue);
+      this.addTodo(inputValue, undefined, true);
       this.setState({ inputValue: '' });
     }
   };
@@ -130,11 +160,11 @@ class TodoList extends Component {
           value={inputValue}
         />
         <TodoListItems>
-          {filteredTodos.map((todo, index) => (
-            <TodoListItem key={index}>
-              <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => this.toggleTodo(index)} />
+          {filteredTodos.map(todo => (
+            <TodoListItem key={todo.id}>
+              <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => this.toggleTodo(todo.id, true)} />
               {todo.title}
-              <TodoListDelete onClick={() => this.deleteTodo(index)} />
+              <TodoListDelete onClick={() => this.deleteTodo(todo.id, true)} />
             </TodoListItem>
           ))}
         </TodoListItems>
