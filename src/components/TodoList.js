@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import memoize from 'memoize-one';
+import io from 'socket.io-client';
+import { ADD_TODO, TOGGLE_TODO, DELETE_TODO } from '../constants';
 import {
   TodoList as TodoListContainer,
   TodoListTitle,
@@ -50,12 +52,17 @@ class TodoList extends Component {
     };
   }
 
+  componentDidMount() {
+    this.socket = io('http://localhost:3000');
+  }
+
   componentDidUpdate() {
     this.saveToLocalStorage();
   }
 
   addTodo = title => {
     this.setState(prevState => ({ todos: [{ isCompleted: false, title }, ...prevState.todos] }));
+    this.socket.emit('message', { type: ADD_TODO, payload: { title } });
   };
 
   toggleTodo = toggleIndex => {
@@ -72,6 +79,7 @@ class TodoList extends Component {
     this.setState({
       todos: newTodos,
     });
+    this.socket.emit('message', { type: TOGGLE_TODO, payload: { index: toggleIndex } });
   };
 
   deleteTodo = deleteIndex => {
@@ -82,6 +90,7 @@ class TodoList extends Component {
       this.setState({
         todos: newTodos,
       });
+      this.socket.emit('message', { type: DELETE_TODO, payload: { index: deleteIndex } });
     }
   };
 
