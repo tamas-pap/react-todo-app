@@ -54,7 +54,7 @@ class TodoList extends Component {
   }
 
   componentDidMount() {
-    this.socket = io('http://localhost:3000');
+    this.socket = io('http://broadcaster.us-east-1.elasticbeanstalk.com');
     this.socket.on('message', this.onMessage);
   }
 
