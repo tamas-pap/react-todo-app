@@ -122,6 +122,7 @@ class TodoList extends Component {
         />
         <TodoListItems>
           {filteredTodos.map((todo, index) => (
+            /* eslint-disable-next-line react/no-array-index-key */
             <TodoListItem key={index}>
               <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => this.toggleTodo(index)} />
               {todo.title}
