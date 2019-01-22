@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import memoize from 'memoize-one';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { TODO_FILTERS } from '../constants';
+import { addTodo, toggleTodo, deleteTodo, updateFilter, filterTodos } from '../store';
+
 import {
   TodoList as TodoListContainer,
   TodoListTitle,
@@ -14,81 +18,27 @@ import {
   TodoListFilterLabel,
 } from './styled';
 
-const FILTERS = {
-  all: 'All',
-  completed: 'Completed',
-  incompleted: 'Incompleted',
-};
-
-const filterTodos = memoize((todos, filter) => {
-  switch (filter) {
-    case FILTERS.all:
-      return todos;
-
-    case FILTERS.completed:
-      return todos.filter(todo => todo.isCompleted);
-
-    case FILTERS.incompleted:
-      return todos.filter(todo => !todo.isCompleted);
-
-    default:
-      return todos;
-  }
-});
-
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    const storedTodos = localStorage.getItem('todos');
-    const todos = storedTodos ? JSON.parse(storedTodos) : [];
-    const filter = localStorage.getItem('filter') || FILTERS.all;
-
     this.state = {
       inputValue: '',
-      todos,
-      filter,
     };
   }
-
-  componentDidUpdate() {
-    this.saveToLocalStorage();
-  }
-
-  addTodo = title => {
-    this.setState(prevState => ({ todos: [{ isCompleted: false, title }, ...prevState.todos] }));
-  };
-
-  toggleTodo = toggleIndex => {
-    const { todos } = this.state;
-    const newTodos = todos.map((todo, index) => {
-      if (toggleIndex === index) {
-        return {
-          isCompleted: !todo.isCompleted,
-          title: todo.title,
-        };
-      }
-      return todo;
-    });
-    this.setState({
-      todos: newTodos,
-    });
-  };
 
   deleteTodo = deleteIndex => {
     const shouldDelete = window.confirm('Are you sure?');
     if (shouldDelete) {
-      const { todos } = this.state;
-      const newTodos = todos.filter((todo, index) => deleteIndex !== index);
-      this.setState({
-        todos: newTodos,
-      });
+      const { deleteTodo } = this.props;
+      deleteTodo(deleteIndex);
     }
   };
 
   onInputKeyPress = event => {
     const { inputValue } = this.state;
+    const { addTodo } = this.props;
     if (event.key === 'Enter' && !!inputValue.trim()) {
-      this.addTodo(inputValue);
+      addTodo({ title: inputValue });
       this.setState({ inputValue: '' });
     }
   };
@@ -97,19 +47,9 @@ class TodoList extends Component {
     this.setState({ inputValue: event.target.value });
   };
 
-  setFilter = filter => {
-    this.setState({ filter });
-  };
-
-  saveToLocalStorage = () => {
-    const { todos, filter } = this.state;
-    localStorage.setItem('todos', JSON.stringify(todos));
-    localStorage.setItem('filter', filter);
-  };
-
   render() {
-    const { inputValue, filter, todos } = this.state;
-    const filteredTodos = filterTodos(todos, filter);
+    const { inputValue } = this.state;
+    const { filter, filteredTodos, toggleTodo, updateFilter } = this.props;
 
     return (
       <TodoListContainer>
@@ -124,7 +64,7 @@ class TodoList extends Component {
           {filteredTodos.map((todo, index) => (
             /* eslint-disable-next-line react/no-array-index-key */
             <TodoListItem key={index}>
-              <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => this.toggleTodo(index)} />
+              <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => toggleTodo(index)} />
               {todo.title}
               <TodoListDelete onClick={() => this.deleteTodo(index)} />
             </TodoListItem>
@@ -133,20 +73,23 @@ class TodoList extends Component {
         <TodoListFilter>
           <TodoListFilterLabel>Show:</TodoListFilterLabel>
           <TodoListFilterOptions>
-            <TodoListFilterOption isSelected={filter === FILTERS.all} onClick={() => this.setFilter(FILTERS.all)}>
-              {FILTERS.all}
+            <TodoListFilterOption
+              isSelected={filter === TODO_FILTERS.all}
+              onClick={() => updateFilter(TODO_FILTERS.all)}
+            >
+              {TODO_FILTERS.all}
             </TodoListFilterOption>
             <TodoListFilterOption
-              isSelected={filter === FILTERS.completed}
-              onClick={() => this.setFilter(FILTERS.completed)}
+              isSelected={filter === TODO_FILTERS.completed}
+              onClick={() => updateFilter(TODO_FILTERS.completed)}
             >
-              {FILTERS.completed}
+              {TODO_FILTERS.completed}
             </TodoListFilterOption>
             <TodoListFilterOption
-              isSelected={filter === FILTERS.incompleted}
-              onClick={() => this.setFilter(FILTERS.incompleted)}
+              isSelected={filter === TODO_FILTERS.incompleted}
+              onClick={() => updateFilter(TODO_FILTERS.incompleted)}
             >
-              {FILTERS.incompleted}
+              {TODO_FILTERS.incompleted}
             </TodoListFilterOption>
           </TodoListFilterOptions>
         </TodoListFilter>
@@ -155,4 +98,30 @@ class TodoList extends Component {
   }
 }
 
-export default TodoList;
+TodoList.propTypes = {
+  filter: PropTypes.string.isRequired,
+  filteredTodos: PropTypes.arrayOf(
+    PropTypes.shape({ title: PropTypes.string.isRequired, isCompleted: PropTypes.bool.isRequired }).isRequired,
+  ).isRequired,
+  addTodo: PropTypes.func.isRequired,
+  toggleTodo: PropTypes.func.isRequired,
+  updateFilter: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  filter: state.filter,
+  filteredTodos: filterTodos(state),
+});
+
+const mapDispatchToProps = {
+  addTodo,
+  toggleTodo,
+  deleteTodo,
+  updateFilter,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TodoList);
