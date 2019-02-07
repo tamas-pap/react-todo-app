@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
+    "humps": "^2.0.1",
     "immer": "^1.11.0",
+    "lodash-es": "^4.17.11",
     "memoize-one": "^4.0.3",
     "polished": "^2.3.0",
     "prop-types": "^15.6.2",
