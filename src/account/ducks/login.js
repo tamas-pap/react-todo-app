@@ -12,7 +12,7 @@ const INITIAL_STATE = {
   isLoginFailed: false,
 };
 
-export const loginReducer = (state = INITIAL_STATE, action) => {
+export const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case START_LOGIN:
       return { ...state, isLoggingIn: true, isLoginFailed: false };
