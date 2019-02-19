@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FormInput, Checkbox } from '../../core/components/styled';
+import { Page, PageTitle, PageLogo } from '../../common/components/styled';
 import { TODO_FILTERS } from '../constants';
-import { addTodo, toggleTodo, deleteTodo, updateFilter, filterTodos } from '../store';
+import { addTodo, toggleTodo, deleteTodo, updateFilter, filterTodos } from '../ducks';
 
 import {
-  TodoList as TodoListContainer,
-  TodoListTitle,
   TodoListItems,
   TodoListItem,
-  TodoListInput,
-  TodoListCheckbox,
   TodoListDelete,
   TodoListFilter,
   TodoListFilterOptions,
@@ -52,9 +50,10 @@ class TodoList extends Component {
     const { filter, filteredTodos, toggleTodo, updateFilter } = this.props;
 
     return (
-      <TodoListContainer>
-        <TodoListTitle>Todo list</TodoListTitle>
-        <TodoListInput
+      <Page>
+        <PageLogo />
+        <PageTitle>Todo list</PageTitle>
+        <FormInput
           placeholder="Write your idea here..."
           onKeyPress={this.onInputKeyPress}
           onChange={this.onInputChange}
@@ -64,7 +63,7 @@ class TodoList extends Component {
           {filteredTodos.map((todo, index) => (
             /* eslint-disable-next-line react/no-array-index-key */
             <TodoListItem key={index}>
-              <TodoListCheckbox isChecked={todo.isCompleted} onClick={() => toggleTodo(index)} />
+              <Checkbox isChecked={todo.isCompleted} onClick={() => toggleTodo(index)} />
               {todo.title}
               <TodoListDelete onClick={() => this.deleteTodo(index)} />
             </TodoListItem>
@@ -93,7 +92,7 @@ class TodoList extends Component {
             </TodoListFilterOption>
           </TodoListFilterOptions>
         </TodoListFilter>
-      </TodoListContainer>
+      </Page>
     );
   }
 }
@@ -110,8 +109,8 @@ TodoList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  filter: state.filter,
-  filteredTodos: filterTodos(state),
+  filter: state.todos.todos.filter,
+  filteredTodos: filterTodos(state.todos.todos),
 });
 
 const mapDispatchToProps = {
