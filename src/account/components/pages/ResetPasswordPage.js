@@ -15,9 +15,9 @@ class ResetPasswordPage extends Component {
   };
 
   render() {
-    const { isResetPasswordFailed, isResetPasswordSucces } = this.props;
+    const { isResetPasswordFailed, isResetPasswordSucces, isResettingPassword } = this.props;
     return (
-      <Page>
+      <Page isLoading={isResettingPassword}>
         <PageLogo />
         <PageTitle>Reset your password</PageTitle>
         {isResetPasswordFailed && <FormError> A problem occured. Please try again later</FormError>}
