@@ -16,3 +16,11 @@ export const login = (email, password) => {
 };
 
 export const logout = () => http.post('/account/logout').then(() => destroy());
+
+export const resetPassword = (token, password) => {
+  const payload = {
+    password,
+  };
+
+  return http.post(`/account/reset-password?passwordResetToken=${token}`, payload);
+};
