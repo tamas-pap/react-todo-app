@@ -16,9 +16,9 @@ class LoginPage extends Component {
   };
 
   render() {
-    const { isLoginFailed, isLoggedIn } = this.props;
+    const { isLoginFailed, isLoggedIn, isLoggingIn } = this.props;
     return (
-      <Page>
+      <Page isLoading={isLoggingIn}>
         <PageLogo />
         <PageTitle>Welcome back</PageTitle>
         {isLoginFailed && <FormError> Wrong credentials provided</FormError>}
