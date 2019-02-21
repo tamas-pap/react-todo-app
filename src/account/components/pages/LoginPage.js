@@ -22,7 +22,7 @@ class LoginPage extends Component {
         <PageLogo />
         <PageTitle>Welcome back</PageTitle>
         {isLoginFailed && <FormError> Wrong credentials provided</FormError>}
-        <Formik onSubmit={this.handleSubmit} render={LoginForm} />
+        <Formik onSubmit={this.handleSubmit} render={LoginForm} initialValues={{ email: '', password: '' }} />
 
         {isLoggedIn && <Redirect to="/todos" />}
       </Page>
