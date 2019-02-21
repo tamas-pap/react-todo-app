@@ -8,7 +8,8 @@ import { THEME } from './common/constants';
 import { GlobalStyle } from './core/components/styled';
 import store from './store';
 
-import { LoginPage } from './account/components/pages';
+import { AccountRouter } from './account/components';
+import { TodosRouter } from './todos/components';
 
 const App = () => (
   <ThemeProvider theme={THEME}>
@@ -17,7 +18,8 @@ const App = () => (
       <GlobalStyle />
       <Router>
         <Switch>
-          <Route path="/account/login" component={LoginPage} />
+          <Route path="/todos" component={TodosRouter} />
+          <Route path="/account" component={AccountRouter} />
         </Switch>
       </Router>
     </Provider>

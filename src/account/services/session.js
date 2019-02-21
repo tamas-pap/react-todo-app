@@ -11,7 +11,7 @@ export const getAuthToken = () => Cookies.get('authToken');
 
 export const getRefreshToken = () => Cookies.get('refreshToken');
 
-export const getUser = () => Cookies.get('user');
+export const getUser = () => Cookies.getJSON('user');
 
 export const destroy = () => {
   Cookies.remove('authToken');

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormInput, Checkbox } from '../../core/components/styled';
-import { Page, PageTitle, PageLogo } from '../../common/components/styled';
-import { TODO_FILTERS } from '../constants';
-import { addTodo, toggleTodo, deleteTodo, updateFilter, filterTodos } from '../ducks';
+import { FormInput, Checkbox } from '../../../core/components/styled';
+import { Page, PageTitle, PageLogo } from '../../../common/components/styled';
+import { TODO_FILTERS } from '../../constants';
+import { addTodo, toggleTodo, deleteTodo, updateFilter, filterTodos } from '../../ducks';
 
 import {
   TodoListItems,
@@ -14,9 +14,9 @@ import {
   TodoListFilterOptions,
   TodoListFilterOption,
   TodoListFilterLabel,
-} from './styled';
+} from '../styled';
 
-class TodoList extends Component {
+class TodoListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,7 +97,7 @@ class TodoList extends Component {
   }
 }
 
-TodoList.propTypes = {
+TodoListPage.propTypes = {
   filter: PropTypes.string.isRequired,
   filteredTodos: PropTypes.arrayOf(
     PropTypes.shape({ title: PropTypes.string.isRequired, isCompleted: PropTypes.bool.isRequired }).isRequired,
@@ -123,4 +123,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TodoList);
+)(TodoListPage);

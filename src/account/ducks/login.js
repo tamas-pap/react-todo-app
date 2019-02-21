@@ -17,7 +17,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
     case START_LOGIN:
       return { ...state, isLoggingIn: true, isLoginFailed: false };
     case COMPLETE_LOGIN:
-      return { ...state, isLoggingIn: false, isLoggedIn: true, user: action.user };
+      return { ...state, isLoggingIn: false, isLoggedIn: true, isLoginFailed: false, user: action.user };
     case FAIL_LOGIN:
       return { ...state, isLoggingIn: false, isLoginFailed: true };
     default:
