@@ -1,5 +1,5 @@
 import http from '../../core/services/http';
-import { create, destroy } from './session';
+import { create, destroy, getAuthToken } from './session';
 
 export const login = (email, password) => {
   const payload = {
@@ -31,4 +31,11 @@ export const signup = (firstName, lastName, email, password) => {
   });
 };
 
-export const logout = () => http.post('/account/logout').then(() => destroy());
+export const logout = () => {
+  const options = {
+    headers: {
+      Authorization: `bearer ${getAuthToken()}`,
+    },
+  };
+  return http.post('/account/logout', {}, options).then(() => destroy());
+};
