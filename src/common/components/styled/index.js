@@ -1,1 +1,1 @@
-export { Page, PageTitle, PageLogo } from './Page';
+export { Page, PageTitle, PageLogo, PageSubtitle } from './Page';

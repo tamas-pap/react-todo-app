@@ -27,3 +27,10 @@ export const PageLogo = styled.div`
   background: url(${logo}) no-repeat;
   background-size: cover;
 `;
+
+export const PageSubtitle = styled.h2`
+  margin-bottom: 22px;
+  font-size: 18px;
+  font-weight: ${props => props.theme.fontWeightNormal};
+  color: ${props => props.theme.gray};
+`;
