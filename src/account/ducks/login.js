@@ -30,7 +30,7 @@ const completeLogin = user => ({ type: COMPLETE_LOGIN, user });
 const failLogin = () => ({ type: FAIL_LOGIN });
 
 export const login = (email, password) => dispatch => {
-  dispatch(startLogin);
+  dispatch(startLogin());
   doLogin(email, password)
     .then(user => {
       dispatch(completeLogin(user));
