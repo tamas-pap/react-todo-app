@@ -26,7 +26,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
 };
 
 const startLogin = () => ({ type: START_LOGIN });
-const completeLogin = user => ({ type: COMPLETE_LOGIN, user });
+export const completeLogin = user => ({ type: COMPLETE_LOGIN, user });
 const failLogin = () => ({ type: FAIL_LOGIN });
 
 export const login = (email, password) => dispatch => {

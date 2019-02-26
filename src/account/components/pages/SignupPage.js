@@ -15,9 +15,9 @@ class SignupPage extends Component {
   };
 
   render() {
-    const { isSignUpFailed, isSignUpSuccessful } = this.props;
+    const { isSignUpFailed, isSignUpSuccessful, isSigningUp } = this.props;
     return (
-      <Page>
+      <Page isLoading={isSigningUp}>
         <PageLogo />
         <PageTitle>Welcome!</PageTitle>
         <Formik
