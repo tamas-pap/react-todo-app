@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
-
 import { FormInput } from '../../../core/components';
 import { Button, ButtonSet } from '../../../core/components/styled';
 
