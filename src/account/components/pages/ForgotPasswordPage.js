@@ -6,6 +6,7 @@ import { createPasswordResetToken } from '../../ducks';
 import { FormError } from '../../../core/components/styled';
 import { Page, PageTitle, PageLogo, PageSubtitle } from '../../../common/components/styled';
 import { ForgotPasswordForm } from '../forms';
+import { ForgetPasswordSchema } from '../../schemas';
 
 class ForgotPasswordPage extends Component {
   handleSubmit = ({ email }) => {
@@ -27,7 +28,12 @@ class ForgotPasswordPage extends Component {
         <PageSubtitle>Enter your email address and we will send you a link to reset your password.</PageSubtitle>
         {isCreatePasswordResetTokenFailed && <FormError> Wrong Email! :(</FormError>}
         {isCreatePasswordResetTokenCompleted && <Redirect to="/account/login" />}
-        <Formik initialValues={{ email: '' }} onSubmit={this.handleSubmit} render={ForgotPasswordForm} />
+        <Formik
+          initialValues={{ email: '' }}
+          validationSchema={ForgetPasswordSchema}
+          onSubmit={this.handleSubmit}
+          render={ForgotPasswordForm}
+        />
       </Page>
     );
   }
