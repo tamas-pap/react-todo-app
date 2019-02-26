@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { LoginPage } from './pages';
-import { SignupPage } from './pages';
+import { LoginPage, SignupPage } from './pages';
 
 const AccountRouter = () => (
   <>

@@ -7,19 +7,19 @@ const FAIL_SIGNUP = 'ACCOUNT/FAIL_SIGNUP';
 
 const INITIAL_STATE = {
   user: getUser(),
-  isSigningIn: false,
-  isSignInSuccessful: false,
-  isSignInFailed: false,
+  isSigningUp: false,
+  isSignUpSuccessful: false,
+  isSignUpFailed: false,
 };
 
 export const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case START_SIGNUP:
-      return { ...state, isSigningIn: true, isSignInFailed: false };
+      return { ...state, isSigningUp: true, isSignUpFailed: false };
     case COMPLETE_SIGNUP:
-      return { ...state, isSigningIn: false, isSignInSuccessful: true, isSignInFailed: false, user: action.user };
+      return { ...state, isSigningUp: false, isSignUpSuccessful: true, isSignUpFailed: false, user: action.user };
     case FAIL_SIGNUP:
-      return { ...state, isSigningIn: false, isSignInFailed: true };
+      return { ...state, isSigningUp: false, isSignUpFailed: true };
     default:
       return state;
   }

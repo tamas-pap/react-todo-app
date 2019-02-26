@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { signup } from '../../ducks';
 import { FormError } from '../../../core/components/styled';
-
 import { Page, PageTitle, PageLogo } from '../../../common/components/styled';
-
-import { SignupForm, SignupSchema } from '../forms';
+import { SignupForm } from '../forms';
+import { SignupSchema } from '../../schemas';
 
 class SignupPage extends Component {
   handleSubmit = ({ firstName, lastName, email, password }) => {
@@ -16,7 +15,7 @@ class SignupPage extends Component {
   };
 
   render() {
-    const { isSignInFailed, isSignInSuccessful } = this.props;
+    const { isSignUpFailed, isSignUpSuccessful } = this.props;
     return (
       <Page>
         <PageLogo />
@@ -27,18 +26,18 @@ class SignupPage extends Component {
           render={SignupForm}
           validationSchema={SignupSchema}
         />
-        {isSignInFailed && <FormError> An error occured. Please try again later.</FormError>}
+        {isSignUpFailed && <FormError> An error occured. Please try again later.</FormError>}
 
-        {isSignInSuccessful && <Redirect to="/todos" />}
+        {isSignUpSuccessful && <Redirect to="/todos" />}
       </Page>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  isSignInSuccessful: state.account.signup.isSignInSuccessful,
-  isSignInFailed: state.account.signup.isSignInFailed,
-  isSigningIn: state.account.signup.isSigningIn,
+  isSignUpSuccessful: state.account.signup.isSignUpSuccessful,
+  isSignUpFailed: state.account.signup.isSignUpFailed,
+  isSigningUp: state.account.signup.isSigningUp,
 });
 const mapDispatchToProps = { signup };
 
