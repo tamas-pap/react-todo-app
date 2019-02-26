@@ -1,13 +1,13 @@
 import { resetPassword as doResetPassword } from '../services/account';
 
 const START_RESET_PASSWORD = 'ACCOUNT/START_RESET_PASSWORD';
-const COMPLETE_RESET_PASSWORD = 'ACCOUNT/COMPLETE_RESET_PASSWORDN';
+const COMPLETE_RESET_PASSWORD = 'ACCOUNT/COMPLETE_RESET_PASSWORD';
 const FAIL_RESET_PASSWORD = 'ACCOUNT/FAIL_RESET_PASSWORD';
 
 const INITIAL_STATE = {
   isResettingPassword: false,
   isResetPasswordFailed: false,
-  isResetPasswordSucces: false,
+  isResetPasswordCompleted: false,
 };
 
 export const reducer = (state = INITIAL_STATE, action) => {
@@ -18,7 +18,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isResettingPassword: false,
-        isResetPasswordSucces: true,
+        isResetPasswordCompleted: true,
         isResetPasswordFailed: false,
       };
     case FAIL_RESET_PASSWORD:
