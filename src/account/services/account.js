@@ -17,6 +17,11 @@ export const login = (email, password) => {
 
 export const logout = () => http.post('/account/logout').then(() => destroy());
 
+export const createPasswordResetToken = email => {
+  const payload = { email };
+  return http.post('/account/create-password-reset-token', payload);
+};
+
 export const resetPassword = (token, password) => {
   const payload = {
     password,
