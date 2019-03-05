@@ -7,8 +7,8 @@ const InvalidPasswordResetToken = () => (
     <PageLogo />
     <PageTitle>Invalid password reset link</PageTitle>
     <p>This password reset link is invalid or expired.</p>
-    <Link to='/account/create-password-reset-token'>Request a new link</Link>
+    <Link to="/account/create-password-reset-token">Request a new link</Link>
   </Page>
 );
 
-export default InvalidPasswordResetToken
+export default InvalidPasswordResetToken;

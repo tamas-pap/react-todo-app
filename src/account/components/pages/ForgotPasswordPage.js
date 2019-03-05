@@ -20,7 +20,6 @@ class ForgotPasswordPage extends Component {
       isCreatePasswordResetTokenFailed,
       isCreatePasswordResetTokenCompleted,
     } = this.props;
-    console.log({ isCreatePasswordResetTokenCompleted });
     return (
       <Page isLoading={isCreatingPasswordResetToken}>
         <PageLogo />

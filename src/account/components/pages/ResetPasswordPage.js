@@ -13,7 +13,7 @@ class ResetPasswordPage extends Component {
     super(props);
 
     const { isValidPasswordResetToken, match } = this.props;
-    isValidPasswordResetToken(match.params.token)
+    isValidPasswordResetToken(match.params.token);
   }
 
   handleSubmit = ({ newPassword }) => {
@@ -22,7 +22,13 @@ class ResetPasswordPage extends Component {
   };
 
   render() {
-    const { isResetPasswordFailed, isResetPasswordCompleted, isResettingPassword, isVerifyingToken, isValidToken } = this.props;
+    const {
+      isResetPasswordFailed,
+      isResetPasswordCompleted,
+      isResettingPassword,
+      isVerifyingToken,
+      isValidToken,
+    } = this.props;
     return (
       <Page isLoading={isVerifyingToken || isResettingPassword}>
         <PageLogo />

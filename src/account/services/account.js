@@ -30,4 +30,5 @@ export const resetPassword = (token, password) => {
   return http.post(`/account/reset-password?passwordResetToken=${token}`, payload);
 };
 
-export const isValidPasswordResetToken = token => http.get(`/account/is-valid-password-reset-token?passwordResetToken=${token}`);
+export const isValidPasswordResetToken = token =>
+  http.get(`/account/is-valid-password-reset-token?passwordResetToken=${token}`);
