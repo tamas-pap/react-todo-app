@@ -37,10 +37,10 @@ export const reducer = (state = INITIAL_STATE, action) => {
       return produce(state, draftState => {
         draftState.todoLists.push({
           ...action.todoList,
-        }),
-          (draftState.isCreatingTodoList = false),
-          (draftState.isCreatedTodoList = true),
-          (draftState.isCreateTodoListFailed = false);
+        });
+        draftState.isCreatingTodoList = false;
+        draftState.isCreatedTodoList = true;
+        draftState.isCreateTodoListFailed = false;
       });
 
     case FAILED_CREATE_TODOLIST:
@@ -56,10 +56,10 @@ export const reducer = (state = INITIAL_STATE, action) => {
 
     case COMPLETE_LOAD_TODOLISTS:
       return produce(state, draftState => {
-        (draftState.todoLists = action.todoLists),
-          (draftState.isLoadingTodoLists = false),
-          (draftState.isLoadedTodoLists = true),
-          (draftState.isCreateTodoListFailed = false);
+        draftState.todoLists = action.todoLists;
+        draftState.isLoadingTodoLists = false;
+        draftState.isLoadedTodoLists = true;
+        draftState.isCreateTodoListFailed = false;
       });
     case FAILED_LOAD_TODOLISTS:
       return { ...state, isLoadingTodoLists: false, isLoadedTodoLists: false, isLoadTodoListsFailed: true };
@@ -81,3 +81,13 @@ export const createTodoList = title => dispatch => {
 };
 
 const startLoadTodoLists = () => ({ type: START_LOAD_TODOLISTS });
+const completeLoadTodoLists = todoLists => ({ type: COMPLETE_LOAD_TODOLISTS, todoLists });
+const failLoadTodoLists = () => ({ type: FAILED_LOAD_TODOLISTS });
+export const loadTodoLists = () => dispatch => {
+  dispatch(startLoadTodoLists);
+  doLoadTodoLists()
+    .then(todoLists => {
+      dispatch(completeLoadTodoLists(todoLists));
+    })
+    .catch(() => dispatch(failLoadTodoLists()));
+};
