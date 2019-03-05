@@ -2,10 +2,10 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { TodoListPage } from './pages';
 
-const AccountRouter = () => (
+const TodosRouter = () => (
   <>
-    <Route exact path="/todos" component={TodoListPage} />
+    <Route exact path="/todo-list/:todoListId" component={TodoListPage} />
   </>
 );
 
-export default AccountRouter;
+export default TodosRouter;

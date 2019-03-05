@@ -22,7 +22,7 @@ const App = () => (
       <Router history={history}>
         <Switch>
           <Route path="/account" component={AccountRouter} />
-          <AuthRoute path="/todos" component={TodosRouter} />
+          <AuthRoute path="/todo-list" component={TodosRouter} />
         </Switch>
       </Router>
     </Provider>

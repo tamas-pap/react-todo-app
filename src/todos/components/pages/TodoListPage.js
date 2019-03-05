@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { FormInput, Checkbox } from '../../../core/components/styled';
 import { Page, PageTitle, PageLogo } from '../../../common/components/styled';
 import { TODO_FILTERS } from '../../constants';
-import { addTodo, toggleTodo, deleteTodo, updateFilter, filterTodos } from '../../ducks';
+import { addTodo, listTodos, toggleTodo, deleteTodo, updateFilter, filterTodos } from '../../ducks';
 
 import {
   TodoListItems,
@@ -24,6 +24,11 @@ class TodoListPage extends Component {
     };
   }
 
+  componentDidMount() {
+    const { listTodos, match } = this.props;
+    listTodos(match.params.todoListId);
+  }
+
   deleteTodo = deleteIndex => {
     const shouldDelete = window.confirm('Are you sure?');
     if (shouldDelete) {
@@ -34,9 +39,9 @@ class TodoListPage extends Component {
 
   onInputKeyPress = event => {
     const { inputValue } = this.state;
-    const { addTodo } = this.props;
+    const { addTodo, match } = this.props;
     if (event.key === 'Enter' && !!inputValue.trim()) {
-      addTodo({ title: inputValue });
+      addTodo(match.params.todoListId, inputValue);
       this.setState({ inputValue: '' });
     }
   };
@@ -115,6 +120,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   addTodo,
+  listTodos,
   toggleTodo,
   deleteTodo,
   updateFilter,
