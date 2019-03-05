@@ -34,7 +34,12 @@ class ResetPasswordPage extends Component {
         <PageLogo />
         <PageTitle>Reset your password</PageTitle>
         {isResetPasswordFailed && <FormError> A problem occured. Please try again later</FormError>}
-        <Formik validationSchema={ResetPasswordSchema} onSubmit={this.handleSubmit} render={ResetPasswordForm} />
+        <Formik
+          validationSchema={ResetPasswordSchema}
+          onSubmit={this.handleSubmit}
+          render={ResetPasswordForm}
+          initialValues={{ newPassword: '', confirmPassword: '' }}
+        />
 
         {isResetPasswordCompleted && <Redirect to="/account/login" />}
         {!isVerifyingToken && !isValidToken && <Redirect to="/account/invalid-password" />}
