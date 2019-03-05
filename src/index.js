@@ -1,25 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { Normalize } from 'styled-normalize';
 import { ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import { THEME } from './common/constants';
 import { GlobalStyle } from './core/components/styled';
+import { AccountRouter, AuthRoute } from './account/components';
+import { TodosRouter } from './todos/components';
+import history from './core/services/history';
+import registerAuthInterceptor from './account/services/registerAuthInterceptor';
 import store from './store';
 
-import { AccountRouter } from './account/components';
-import { TodosRouter } from './todos/components';
+registerAuthInterceptor();
 
 const App = () => (
   <ThemeProvider theme={THEME}>
     <Provider store={store}>
       <Normalize />
       <GlobalStyle />
-      <Router>
+      <Router history={history}>
         <Switch>
-          <Route path="/todos" component={TodosRouter} />
           <Route path="/account" component={AccountRouter} />
+          <AuthRoute path="/todos" component={TodosRouter} />
         </Switch>
       </Router>
     </Provider>
