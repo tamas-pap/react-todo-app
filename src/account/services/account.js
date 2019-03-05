@@ -6,6 +6,7 @@ export const login = (email, password) => {
     email,
     password,
   };
+
   return http.post('/account/login', payload).then(response => {
     const user = response.data;
     const authToken = response.headers.authtoken;
@@ -37,5 +38,22 @@ export const logout = () => {
       Authorization: `bearer ${getAuthToken()}`,
     },
   };
+
   return http.post('/account/logout', {}, options).then(() => destroy());
 };
+
+export const createPasswordResetToken = email => {
+  const payload = { email };
+  return http.post('/account/create-password-reset-token', payload);
+};
+
+export const resetPassword = (token, password) => {
+  const payload = {
+    password,
+  };
+
+  return http.post(`/account/reset-password?passwordResetToken=${token}`, payload);
+};
+
+export const isValidPasswordResetToken = token =>
+  http.get(`/account/is-valid-password-reset-token?passwordResetToken=${token}`);
